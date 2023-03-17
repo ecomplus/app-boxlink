@@ -16,6 +16,7 @@ if (baseUri) {
     })
   }
 }
+app.modules['calculate-shipping'].endpoint = 'https://boxtray.boxlink.com.br/v2/e-com/'
 
 // generate slug from package name or app title if not set or default
 if (!app.slug || app.slug === 'my-awesome-app') {
