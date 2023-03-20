@@ -1,3 +1,5 @@
+const axios = require('axios')
+
 exports.post = ({ appSdk }, req, res) => {
   /**
    * Treat `params` and (optionally) `application` from request body to properly mount the `response`.
@@ -13,10 +15,6 @@ exports.post = ({ appSdk }, req, res) => {
 
   const { params, application } = req.body
   const { storeId } = req
-  // setup basic required response object
-  const response = {
-    shipping_services: []
-  }
   // merge all app options configured by merchant
   const appData = Object.assign({}, application.data, application.hidden_data)
 
@@ -30,40 +28,67 @@ exports.post = ({ appSdk }, req, res) => {
     return
   }
 
-  /* DO THE STUFF HERE TO FILL RESPONSE OBJECT WITH SHIPPING SERVICES */
-
-  /**
-   * Sample snippets:
-
-  if (params.items) {
-    let totalWeight = 0
-    params.items.forEach(item => {
-      // treat items to ship
-      totalWeight += item.quantity * item.weight.value
+  const token = appData.kangu_token
+  if (!token) {
+    // must have configured kangu doc number and token
+    return res.status(409).send({
+      error: 'CALCULATE_AUTH_ERR',
+      message: 'Token or document unset on app hidden data (merchant must configure the app)'
     })
   }
 
-  // add new shipping service option
-  response.shipping_services.push({
-    label: appData.label || 'My shipping method',
-    carrier: 'My carrier',
-    shipping_line: {
-      from: appData.from,
-      to: params.to,
-      package: {
-        weight: {
-          value: totalWeight
-        }
-      },
-      price: 10,
-      delivery_time: {
-        days: 3,
-        working_days: true
-      }
-    }
-  })
 
-  */
+  /* DO THE STUFF HERE TO FILL RESPONSE OBJECT WITH SHIPPING SERVICES */
+
+
+  if (params.items) {
+    const body = {
+      ...params
+    }
+    return axios.post(
+      ` https://boxtray.boxlink.com.br/e-com/${token}`,
+      body,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        timeout: (params.is_checkout_confirmation ? 8000 : 5000)
+      }
+    )
+
+      .then(({ data, status }) => {
+        let result
+        if (typeof data === 'string') {
+          try {
+            result = JSON.parse(data)
+          } catch (e) {
+            console.log('> Boxlink invalid JSON response')
+            return res.status(409).send({
+              error: 'CALCULATE_INVALID_RES',
+              message: data
+            })
+          }
+        } else {
+          result = data
+        }
+
+        if (result && Number(status) === 200 && Array.isArray(result)) {
+          // success response
+          const response = result
+          res.send(response)
+        } else {
+          // console.log(data)
+          const err = new Error('Invalid Boxlink calculate response')
+          err.response = { data, status }
+          throw err
+        }
+      })
+  } else {
+    res.status(400).send({
+      error: 'CALCULATE_EMPTY_CART',
+      message: 'Cannot calculate shipping without cart items'
+    })
+  }
 
   res.send(response)
 }

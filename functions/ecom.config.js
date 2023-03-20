@@ -138,14 +138,14 @@ const app = {
   },
 
   admin_settings: {
-     token: {
-       schema: {
-         type: 'string',
-         maxLength: 256,
-         title: 'Token boxlink'
-       },
-       hide: true
-     }
+    token: {
+      schema: {
+        type: 'string',
+        maxLength: 256,
+        title: 'Token boxlink'
+      },
+      hide: true
+    }
   }
 }
 
