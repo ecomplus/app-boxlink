@@ -48,7 +48,6 @@ exports.post = ({ appSdk }, req, res) => {
     const body = {
       ...params
     }
-    console.log('Body', JSON.stringify(body))
     return axios.post(
       `https://boxtray.boxlink.com.br/e-com/${token}`,
       body,
@@ -61,8 +60,6 @@ exports.post = ({ appSdk }, req, res) => {
     )
 
       .then(({ data, status }) => {
-        console.log('Status:', status)
-        console.log('Resultado:', data)
         let result
         if (typeof data === 'string') {
           try {
@@ -77,8 +74,7 @@ exports.post = ({ appSdk }, req, res) => {
         } else {
           result = data
         }
-        console.log('Resultado:', JSON.stringify(result))
-        if (result && Number(status) === 200 && Array.isArray(result)) {
+        if (result && Number(status) === 200 && Array.isArray(result.shipping_services)) {
           // success response
           response = result
           res.send(response)
