@@ -71,7 +71,7 @@ exports.post = ({ appSdk }, req, res) => {
         } else {
           result = data
         }
-
+        console.log('Resultado:', JSON.stringify(result))
         if (result && Number(status) === 200 && Array.isArray(result)) {
           // success response
           const response = result
