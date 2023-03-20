@@ -148,7 +148,6 @@ const app = {
     }
   }
 }
-
 /**
  * List of Procedures to be created on each store after app installation.
  * Ref.: https://developers.e-com.plus/docs/api/#/store/procedures/
