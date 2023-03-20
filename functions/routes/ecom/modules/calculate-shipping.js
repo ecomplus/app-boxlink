@@ -28,7 +28,7 @@ exports.post = ({ appSdk }, req, res) => {
     return
   }
 
-  const token = appData.kangu_token
+  const token = appData.token
   if (!token) {
     // must have configured kangu doc number and token
     return res.status(409).send({
@@ -46,7 +46,7 @@ exports.post = ({ appSdk }, req, res) => {
       ...params
     }
     return axios.post(
-      ` https://boxtray.boxlink.com.br/e-com/${token}`,
+      `https://boxtray.boxlink.com.br/e-com/${token}`,
       body,
       {
         headers: {
