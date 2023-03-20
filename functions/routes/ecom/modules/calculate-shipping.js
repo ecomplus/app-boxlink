@@ -15,6 +15,9 @@ exports.post = ({ appSdk }, req, res) => {
 
   const { params, application } = req.body
   const { storeId } = req
+  let response = {
+    "shipping_services": []
+  }
   // merge all app options configured by merchant
   const appData = Object.assign({}, application.data, application.hidden_data)
 
@@ -45,6 +48,7 @@ exports.post = ({ appSdk }, req, res) => {
     const body = {
       ...params
     }
+    console.log('Body', JSON.stringify(body))
     return axios.post(
       `https://boxtray.boxlink.com.br/e-com/${token}`,
       body,
@@ -57,6 +61,8 @@ exports.post = ({ appSdk }, req, res) => {
     )
 
       .then(({ data, status }) => {
+        console.log('Status:', status)
+        console.log('Resultado:', data)
         let result
         if (typeof data === 'string') {
           try {
@@ -74,7 +80,7 @@ exports.post = ({ appSdk }, req, res) => {
         console.log('Resultado:', JSON.stringify(result))
         if (result && Number(status) === 200 && Array.isArray(result)) {
           // success response
-          const response = result
+          response = result
           res.send(response)
         } else {
           // console.log(data)
