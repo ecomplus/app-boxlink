@@ -7,7 +7,7 @@
 
 const app = {
   app_id: 112262,
-  title: 'Box link',
+  title: 'Boxlink',
   slug: 'box-link',
   type: 'external',
   state: 'active',
@@ -138,6 +138,15 @@ const app = {
   },
 
   admin_settings: {
+    zip: {
+      schema: {
+        type: 'string',
+        maxLength: 9,
+        pattern: '^[0-9]{5}-?[0-9]{3}$',
+        title: 'CEP de origem'
+      },
+      hide: true
+    },
     token: {
       schema: {
         type: 'string',

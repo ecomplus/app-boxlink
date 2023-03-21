@@ -40,6 +40,10 @@ exports.post = ({ appSdk }, req, res) => {
     })
   }
 
+  const originZip = params.from
+  ? params.from.zip.replace(/\D/g, '')
+  : appData.zip ? appData.zip.replace(/\D/g, '') : ''
+
 
   /* DO THE STUFF HERE TO FILL RESPONSE OBJECT WITH SHIPPING SERVICES */
 
@@ -76,7 +80,17 @@ exports.post = ({ appSdk }, req, res) => {
         }
         if (result && Number(status) === 200 && Array.isArray(result.shipping_services)) {
           // success response
-          response = result
+          if (originZip) {
+            const services = result.shipping_services.map(shipping => {
+              shipping['from'] = { zip: originZip }
+            })
+            response = {
+              shipping_services: services
+            }
+          } else {
+            response = result
+          }
+
           res.send(response)
         } else {
           // console.log(data)
