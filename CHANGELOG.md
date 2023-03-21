@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.0.0 (2023-03-21)
+
+
+### Features
+
+* **calculate-shipping:** config calculate to boxlink ([45968b9](https://github.com/ecomplus/application-starter/commit/45968b96627baa2125e67d9ef091825dfbf063b3))
+
+
+### Bug Fixes
+
+* **calculate-shipping:** check deep object array ([34975f3](https://github.com/ecomplus/application-starter/commit/34975f322f64a181731e4d9c3c69ad7ff42cd6e2))
+
 ## [1.0.0-starter.26](https://github.com/ecomplus/application-starter/compare/v1.0.0-starter.25...v1.0.0-starter.26) (2022-02-24)
 
 ## [1.0.0-starter.25](https://github.com/ecomplus/application-starter/compare/v1.0.0-starter.24...v1.0.0-starter.25) (2022-02-24)
