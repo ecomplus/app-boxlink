@@ -50,7 +50,10 @@ exports.post = ({ appSdk }, req, res) => {
 
   if (params.items) {
     const body = {
-      ...params
+      ...params,
+      from: {
+        zip: originZip
+      }
     }
     return axios.post(
       `https://boxtray.boxlink.com.br/e-com/${token}`,
@@ -80,17 +83,7 @@ exports.post = ({ appSdk }, req, res) => {
         }
         if (result && Number(status) === 200 && Array.isArray(result.shipping_services)) {
           // success response
-          if (originZip) {
-            const services = result.shipping_services.map(shipping => {
-              shipping['from'] = { zip: originZip }
-            })
-            response = {
-              shipping_services: services
-            }
-          } else {
-            response = result
-          }
-
+          response = result
           res.send(response)
         } else {
           // console.log(data)
