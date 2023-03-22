@@ -55,7 +55,6 @@ exports.post = ({ appSdk }, req, res) => {
         zip: originZip
       }
     }
-    console.log('Body', JSON.stringify(body))
     return axios.post(
       `https://boxtray.boxlink.com.br/e-com/${token}`,
       body,
