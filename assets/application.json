@@ -4,7 +4,7 @@
   "slug": "box-link",
   "type": "external",
   "state": "active",
-  "authentication": false,
+  "authentication": true,
   "modules": {
     "calculate_shipping": {
       "enabled": true,
