@@ -92,7 +92,7 @@ exports.post = ({ appSdk }, req, res) => {
           err.response = { data, status }
           throw err
         }
-      })
+      }).catch(err => console.log('error de cálculo', err.response))
   } else {
     res.status(400).send({
       error: 'CALCULATE_EMPTY_CART',
